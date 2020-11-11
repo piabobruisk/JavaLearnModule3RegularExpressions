@@ -134,15 +134,13 @@ public class Main {
         int start = 0;
         ArrayList<Paragraph> result = new ArrayList<>();
 
-        Pattern pattern = Pattern.compile("[.!?]+[\n]{1,2}[ ]{2,}|\t+");
+        Pattern pattern = Pattern.compile("([.!?]+)[\n]{1,2}([ ]{2,}|\t+)");
         Matcher matcher = pattern.matcher(string);
 
         while (matcher.find()) {
-            String findMatches = string.substring(matcher.start(), matcher.end());
-            String[] tmp = findMatches.split("\n");
-            result.add(new Paragraph(string.substring(start, matcher.start()+tmp[0].length() )));
-            start = matcher.end();
-            if (tmp.length>1)start-=tmp[1].length();
+            String tmp =string.substring(start, matcher.start()+ matcher.group(1).length());
+            result.add(new Paragraph(tmp));
+            start = matcher.end()- matcher.group(2).length();
         }
         result.add(new Paragraph(string.substring(start, string.length() - 1)));
 
