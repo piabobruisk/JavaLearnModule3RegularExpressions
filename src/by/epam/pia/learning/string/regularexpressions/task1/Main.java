@@ -19,7 +19,7 @@ public class Main {
             " неслась куда-то\nкак отпущенный по ветру воздушный шарик, но одновременно была тяжёлой как свинец. Тело ныло," +
             " словно её\nдолго и небрежно волочили по земле. А ещё у неё было гадкое ощущение, что она обмочилась – " +
             "комбинезон\nв паху был влажным и липким.\n" +
-            "   Что с ней?\n" +
+            "\tЧто с ней?\n" +
             "   Она открыла глаза – с трудом. Полутьма, низкий металлический потолок, рядом жёсткие ложементы кресел…\n" +
             "она полулежала-полусидела в таком же, пристёгнутая ремнями безопасности. Анге пошевелила пальцами на руке.\n" +
             "Бережно повернула голову.\n" +
@@ -134,14 +134,15 @@ public class Main {
         int start = 0;
         ArrayList<Paragraph> result = new ArrayList<>();
 
-        Pattern pattern = Pattern.compile("[.!?]+[\n]{1,2}[ ]{2,}");
+        Pattern pattern = Pattern.compile("[.!?]+[\n]{1,2}[ ]{2,}|\t+");
         Matcher matcher = pattern.matcher(string);
 
         while (matcher.find()) {
             String findMatches = string.substring(matcher.start(), matcher.end());
             String[] tmp = findMatches.split("\n");
-            result.add(new Paragraph(string.substring(start, matcher.start()) + tmp[0]));
-            start = matcher.end() - tmp[1].length();
+            result.add(new Paragraph(string.substring(start, matcher.start()+tmp[0].length() )));
+            start = matcher.end();
+            if (tmp.length>1)start-=tmp[1].length();
         }
         result.add(new Paragraph(string.substring(start, string.length() - 1)));
 
